@@ -1,0 +1,26 @@
+*{margin:0; padding:0;}
+
+.addingString{
+    display: flex;
+    border: 1px solid black;
+    background-color: green;
+    border-radius: 3px;
+    margin: 15px 30vw 0 30vw;
+}
+textarea{
+    resize: none;
+    min-width: 60%;
+    padding-top: 15px;
+    /*display: table-cell;
+    vertical-align: middle;*/
+}
+button{
+    font-size:110%;
+    padding: 0 10px 0 10px;
+}
+.redCheck   {background-color: rgb(207, 46, 46);}
+.pinkCheck  {background-color: rgb(206, 125, 139);}
+.purpleCheck{background-color: rgb(160, 86, 160);}
+.blueCheck  {background-color: rgb(122, 122, 231);}
+.greenCheck {background-color: rgb(10, 165, 10);}
+.yellowCheck{background-color: rgb(212, 212, 39);}
