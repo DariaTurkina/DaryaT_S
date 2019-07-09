@@ -1,26 +1,87 @@
-*{margin:0; padding:0;}
-
+*{margin:0; 
+    padding:0; 
+    background-color: rgb(235,243,246);
+    font-size:100%;
+}
 .addingString{
     display: flex;
-    border: 1px solid black;
-    background-color: green;
+    border: 1px solid rgb(217,221,222);
+    background-color: white;
     border-radius: 3px;
     margin: 15px 30vw 0 30vw;
+    min-height: 50px;
 }
 textarea{
     resize: none;
-    min-width: 60%;
+    min-width: 50%;
     padding-top: 15px;
-    /*display: table-cell;
-    vertical-align: middle;*/
+    padding-left: 20px;
+    border: none;
+    background-color: transparent;
+    font-size:120%;
 }
+textarea::-moz-placeholder{color: rgb(125,118,112);}
 button{
-    font-size:110%;
-    padding: 0 10px 0 10px;
+    margin: 7px 10px 8px 10px;
+    color: white;
+    border: none;
+    padding: 0 20px 0 20px;
+    border-radius: 3px;
+    box-shadow: none;
+    box-shadow: 0 2px rgb(32,122,113);
+    background-color: rgb(38,165,154);
 }
-.redCheck   {background-color: rgb(207, 46, 46);}
-.pinkCheck  {background-color: rgb(206, 125, 139);}
-.purpleCheck{background-color: rgb(160, 86, 160);}
-.blueCheck  {background-color: rgb(122, 122, 231);}
-.greenCheck {background-color: rgb(10, 165, 10);}
-.yellowCheck{background-color: rgb(212, 212, 39);}
+.colorBox{margin: auto; background-color: transparent;}
+
+.redCheck   {background-color: rgb(242,108,105);}
+.pinkCheck  {background-color: rgb(242,121,162);}
+.purpleCheck{background-color: rgb(145,112,203);}
+.blueCheck  {background-color: rgb(94 ,179,246);}
+.greenCheck {background-color: rgb(103,215,229);}
+.yellowCheck{background-color: rgb(255,224,131);}
+
+input[type='radio']{
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    margin: 0 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+input[type='radio']:checked{
+    outline: none;
+    border: 1px solid white;
+    box-shadow: -1px 0 rgb(215,199,200), 0 1px rgb(215,199,200), 
+        1px 0 rgb(215,199,200), 0 -1px rgb(215,199,200);
+    border-radius: 3px;
+}
+.toDoList{
+    visibility: visible;
+    margin: 15px 30vw 0 30vw;
+}
+.taskBox{
+    display: flex;
+    border-radius: 5px;
+    color: white;
+}
+.checkInList, .labelInList{
+    display: flex;
+    border: 1px solid rgb(235,243,246);
+    background-color: transparent;
+    height: 70px;
+}
+.checkInList{
+    min-width: 70px;
+}
+.boxWithCheck, .boxWithP, #justP{
+    background-color: transparent;
+}
+.boxWithCheck{margin: auto;}
+.boxWithP{margin: auto 35px;}
+
+#justCheckBox{
+    width: 16px; 
+    height: 16px;
+}
+.labelInList{width: 100%; margin-left: 0;}
