@@ -39,7 +39,7 @@ export default class Filter extends React.Component {
         return (
             <div className="Filter">
                 <div className="Counter">
-                    <p>{ (e) => this.Couter(e) } items left</p>
+                    <p value="{ (e) => this.Couter(e) } items left"/>
                 </div>
                 <div className="FilterButtons">
                     <input type="submit" value="All"></input>

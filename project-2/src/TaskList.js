@@ -1,14 +1,39 @@
 import React from 'react';
-//import Filter from './Components/Filter.js'
+import { Todo } from './Components/Todo.js'
 
-export default class TaskList extends React.Component {
-    
+class TaskList extends React.Component {
+
+    addTask() {
+        
+        const data = this.props.array;
+        console.log('propseses : ', data)
+        //const checkFunk = this.props.checkTask;
+        const delFunk = this.props.deleteTask;
+        let newsTemplate = null;
+
+        if (data.length){
+            newsTemplate = data.map(function(item) {
+                return (
+                    <Todo
+                        taskName = { item.name }
+                        taskStatus = { item.status }
+                        id = { item.id }
+                        //checkTask = { checkFunk }
+                        deleteTask = { delFunk }
+                    />
+                )
+            })
+        }
+        return newsTemplate;
+    }
+
     render() {
         return(
-            <div className="TaskList">
-                //<Todo />
+            <div className = "TaskList">
+                { this.addTask() }
             </div>
         )
     }
-
 }
+
+export { TaskList }
