@@ -15,45 +15,59 @@ class App extends React.Component {
     }
     this.deleteTask = this.deleteTask.bind(this);
   }
-
-  count = 0;
   
   addTodo (nameValue) {
+    
+    const uuid = require('uuid/v4');
+
     let newTask = {
       name: nameValue, 
       status: false,
-      id: this.count
+      id: uuid()
     }
     this.setState ({ 
       todoes: [ ...this.state.todoes, newTask ]
     });
-    this.count++;
-    console.log('ADDTODO NOW : ', this.state.todoes)
   }
 
-  checkTask(id) {
-    const whatIsCheck = this.state.todoes.filter(el => el.id === +id);
-    const allWithoutCheckedNow = this.state.todoes.filter(el => el.id !== +id);
-    whatIsCheck.status = !whatIsCheck.status;
-    const all = whatIsCheck + allWithoutCheckedNow;
-    this.setState({
-      todoes: all
-    })
-
+  checkTask(id, bool) {
+    this.setState(state => {
+      const todoes = state.todoes.map(e => {
+        if (e.id === id) {
+          e.status = bool;
+          console.log('vvv>>>', e.status)
+          return e.status;
+        }
+      });
+      console.log(">>", todoes)
+      return {status: todoes};
+    });
   }
 
   deleteTask (id) {
-    console.log('ID', id)
-    const filteredTasks = this.state.todoes.filter(el => el.id !== +id) 
-
-    console.log('filteredTasks', filteredTasks)
+    const filteredTasks = this.state.todoes.filter(el => (el.id !== id));
+    console.log('@@@filteredTasks', filteredTasks);
     this.setState({
       todoes: filteredTasks
     })
-    //actions with count
+  }
+
+  changeText(name, id) {
+    
+    this.setState(state => {
+      const updated = state.todoes.map(e => {
+          if (e.id === id) {
+            e.name = name;
+            return e.name;
+          }
+        });
+        return {updated,};
+    });
+
   }
   
   render() {
+    console.log('render App');
     return (
       <div className="App" id="app">
         <header className="App-header">todos</header>
@@ -63,7 +77,8 @@ class App extends React.Component {
         />
         { Array.isArray(this.state.todoes) && <TaskList 
           array = { this.state.todoes } 
-          //checkTask = { (id) => this.checkTask(id) }
+          checkTask = { (id, bool) => this.checkTask(id, bool) }
+          changeTaskName = { (name, id) => this.changeText(name, id) }
           deleteTask = { (id) => this.deleteTask(id) }
         />}
 

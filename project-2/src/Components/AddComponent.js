@@ -9,7 +9,6 @@ export default class AddComponent extends React.Component {
             document.getElementById('textInp').value = '';
             let textValue = this.setState.name;
             this.props.addTodo(textValue);
-            console.log('TEXT : ', textValue);
         }
     }
 

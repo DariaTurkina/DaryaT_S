@@ -6,7 +6,7 @@ export default class Filter extends React.Component {
         super(props);
         this.state = { taskMass: [...this.props.massive]};
     }*/
-    tasks = this.props;
+    
     
     Counter(e) {
         let count=0;
@@ -36,10 +36,11 @@ export default class Filter extends React.Component {
     }
     
     render() {
+        const tasks = this.props;
         return (
             <div className="Filter">
                 <div className="Counter">
-                    <p value="{ (e) => this.Couter(e) } items left"/>
+                    <p>{ (e) => this.Couter(e) } items left</p>
                 </div>
                 <div className="FilterButtons">
                     <input type="submit" value="All"></input>

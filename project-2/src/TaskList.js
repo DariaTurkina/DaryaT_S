@@ -3,22 +3,26 @@ import { Todo } from './Components/Todo.js'
 
 class TaskList extends React.Component {
 
-    addTask() {
+    addTask(data) {
         
-        const data = this.props.array;
-        console.log('propseses : ', data)
-        //const checkFunk = this.props.checkTask;
+        // const data = this.props.array;
+        // console.log('PROPSES : ', data)
+        this.TaskList.clear();
+        const checkFunk = this.props.checkTask;
+        const changeFunk = this.props.changeTaskName;
         const delFunk = this.props.deleteTask;
         let newsTemplate = null;
 
         if (data.length){
             newsTemplate = data.map(function(item) {
+                console.log('itemitem', item)
                 return (
                     <Todo
                         taskName = { item.name }
                         taskStatus = { item.status }
                         id = { item.id }
-                        //checkTask = { checkFunk }
+                        checkTask = { checkFunk }
+                        changeTaskName = { changeFunk }
                         deleteTask = { delFunk }
                     />
                 )
@@ -28,9 +32,12 @@ class TaskList extends React.Component {
     }
 
     render() {
+        console.log('render List');
+
+        console.log('PROPSES__333 : ', this.props.array)
         return(
             <div className = "TaskList">
-                { this.addTask() }
+                { this.addTask(this.props.array) }
             </div>
         )
     }
