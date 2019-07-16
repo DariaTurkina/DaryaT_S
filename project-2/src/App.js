@@ -1,25 +1,16 @@
 import React from 'react';
-//import logo from './logo.svg';
 //import './App.css';
 import AddComponent from './Components/AddComponent.js'
 import { TaskList } from './TaskList.js'
-//import Filter from './Components/Filter.js'
+import uuid from 'uuid/v4';
 
 class App extends React.Component {
   
-  constructor(props) {
-    super(props);
- 
-    this.state = {
-        todoes: []
-    }
-    this.deleteTask = this.deleteTask.bind(this);
+  state = {
+    todoes: []
   }
   
   addTodo (nameValue) {
-    
-    const uuid = require('uuid/v4');
-
     let newTask = {
       name: nameValue, 
       status: false,
@@ -29,27 +20,22 @@ class App extends React.Component {
       todoes: [ ...this.state.todoes, newTask ]
     });
   }
+ /************************************************/
 
   checkTask(id, bool) {
     this.setState(state => {
       const todoes = state.todoes.map(e => {
         if (e.id === id) {
           e.status = bool;
-          console.log('vvv>>>', e.status)
           return e.status;
         }
       });
-      console.log(">>", todoes)
       return {status: todoes};
     });
   }
 
   deleteTask (id) {
-    const filteredTasks = this.state.todoes.filter(el => (el.id !== id));
-    console.log('@@@filteredTasks', filteredTasks);
-    this.setState({
-      todoes: filteredTasks
-    })
+    this.setState({ ...this.state, todoes: this.state.todoes.filter(el => (el.id !== id)) })
   }
 
   changeText(name, id) {
@@ -65,9 +51,20 @@ class App extends React.Component {
     });
 
   }
+  /************************************************/
+
+  removeAllCompleted(arrayOfCompleted) {
+    let clearedFromComleted = this.state.todoes.filter(e => e.id !== arrayOfCompleted[0].id);
+    for (let i = 1; i < arrayOfCompleted.length; i++) {
+      clearedFromComleted = clearedFromComleted.filter(e => e.id !== arrayOfCompleted[i].id);
+    }
+    this.setState({
+      todoes: clearedFromComleted
+    })
+  }
+  /*******************______**************************/
   
   render() {
-    console.log('render App');
     return (
       <div className="App" id="app">
         <header className="App-header">todos</header>
@@ -75,13 +72,13 @@ class App extends React.Component {
         <AddComponent 
           addTodo = { (e) => this.addTodo(e) }
         />
-        { Array.isArray(this.state.todoes) && <TaskList 
+        <TaskList 
           array = { this.state.todoes } 
           checkTask = { (id, bool) => this.checkTask(id, bool) }
           changeTaskName = { (name, id) => this.changeText(name, id) }
           deleteTask = { (id) => this.deleteTask(id) }
-        />}
-
+          removeAllCompleted = { (arrayOfCompleted) => this.removeAllCompleted(arrayOfCompleted) }
+        /> 
 
       </div>
     );

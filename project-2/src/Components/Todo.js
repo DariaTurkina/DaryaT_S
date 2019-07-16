@@ -1,27 +1,22 @@
 import React from 'react';
 
-class Todo extends React.Component {
+export default class Todo extends React.Component {
 
-    state = { 
-        taskName: this.props.taskName,
-        checked: this.props.taskStatus,
+    state = {
         is_editable: false
     };
-
+/* 
     checkTask() {
 
-        let bool = !this.state.checked;
-        this.setState({ checked: bool });
+        let bool = !this.props.taskStatus;
         this.props.checkTask(this.props.id, bool);
-
-    }
+    } */
 
     changeTextName() {
         this.setState({ is_editable: true });
     }
 
     isEnterPress(e) {
-        
         if (e.which === 13) {
             let textValue = e.target.value;
             this.setState({ taskName: textValue });
@@ -31,40 +26,40 @@ class Todo extends React.Component {
     }
 
     render() {
-        console.log('render Item');
-        return(
+        return (
             <div className = "Todo">
                 <div>
-                    <input 
+                    <input
                         type = "checkbox"
-                        checked = { this.state.checked }
-                        onClick = { (id, bool) => this.checkTask(id, bool) }
+                        checked = {this.props.taskStatus}
+                        onClick = {() => this.props.checkTask(this.props.id, !this.props.taskStatus)}
                     />
                 </div>
                 <div>
-                    <p 
-                        disabled = { this.state.is_editable }
-                        onDoubleClick = { (e) => this.changeTextName(e) }
+                    <p
+                        disabled = {this.state.is_editable}
+                        onDoubleClick = {(e) => this.changeTextName(e)}
                     >
-                        { this.state.taskName }
+                        {this.props.taskName}
                     </p>
-                    <input 
-                        type = "text" 
-                        id = { this.props.id }
-                        defaultValue = { this.state.taskName }
-                        onKeyPress = { (e) => this.isEnterPress(e) } 
-                        disabled = { !this.state.is_editable }
-                    />
+                    {
+                        this.state.is_editable && 
+                        <input
+                            type = "text"
+                            id = {this.props.id}
+                            defaultValue = {this.props.taskName}
+                            onKeyPress = {(e) => this.isEnterPress(e)}
+                            disabled = {!this.state.is_editable}
+                        />
+                    }
                 </div>
                 <div>
-                    <input 
-                        type = "submit"
-                        value = "X"
+                    <button
                         onClick = {() => this.props.deleteTask(this.props.id)}
-                    />
+                    >X</button>
                 </div>
             </div>
         )
     }
 }
-export { Todo }
+// export { Todo }

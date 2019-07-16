@@ -1,56 +1,50 @@
 import React from 'react';
 
-export default class Filter extends React.Component {
-
-    /*constructor(props) {
-        super(props);
-        this.state = { taskMass: [...this.props.massive]};
-    }*/
+export default class Filter extends React.Component {    
     
-    
-    Counter(e) {
-        let count=0;
-        for (let i=0;i<e.tasks.name.length;i++) {
-            if (e.tasks.status===0) {
-                count++;
-            }
-        }
-        console.log('COUNTEEEEEEEER :', count);
-        return count;
+    state = {
+        activeTasks: [],
+        completedTasks: []
     }
 
-    ShowAll() {
-        //
-    }
+    Counter(todoes) {
 
-    ShowActive() {
-        //
-    }
-
-    ShowComleted() {
-        //
-    }
-
-    CleanCompleted() {
-        //
+        this.state = { ...this.state, activeTasks: todoes.filter(e => e.status === false) };
+        this.state = { ...this.state, completedTasks: todoes.filter(e => e.status === true) };
+        console.log('STATE_F : ', this.state);
+        return this.state.activeTasks.length;
     }
     
     render() {
-        const tasks = this.props;
+        const todoes = this.props.array;
         return (
-            <div className="Filter">
-                <div className="Counter">
-                    <p>{ (e) => this.Couter(e) } items left</p>
+            <div className = "Filter">
+                <div className = "Counter">
+                    <p>{ this.Counter(todoes) } items left</p>
                 </div>
-                <div className="FilterButtons">
-                    <input type="submit" value="All"></input>
-                    <input type="submit" value="Active"></input>
-                    <input type="submit" value="Completed"></input>
+                <div className = "FilterButtons">
+                    <input 
+                        type = "submit" 
+                        onClick = { () => this.props.transmit(todoes) } 
+                        value = "All"
+                    />
+                    <input 
+                        type = "submit" 
+                        onClick = { () => this.props.transmit(this.state.activeTasks) } 
+                        value = "Active"
+                    />
+                    <input 
+                        type = "submit" 
+                        onClick = { () => this.props.transmit(this.state.completedTasks) } 
+                        value = "Completed"
+                    />
                 </div>
-                <div className="ClearingButton">
-                    <input type="submit" value="Clear completed" onClick={() => this.clearAll()}>
-                        
-                    </input>
+                <div className = "ClearingButton">
+                    <input 
+                        type = "submit" 
+                        value = "Clear completed" 
+                        onClick = { () => this.props.removeAllCompleted(this.state.completedTasks) } 
+                    />
                 </div>
             </div>
         )
