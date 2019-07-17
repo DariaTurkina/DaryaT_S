@@ -1,0 +1,9 @@
+.visibleInput{
+    display: block;
+}
+.invisibleInput{
+    display: none;
+}
+.Todo{
+    background-color: rgb(233, 235, 247);
+}

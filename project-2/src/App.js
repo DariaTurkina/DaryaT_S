@@ -54,13 +54,17 @@ class App extends React.Component {
   /************************************************/
 
   removeAllCompleted(arrayOfCompleted) {
-    let clearedFromComleted = this.state.todoes.filter(e => e.id !== arrayOfCompleted[0].id);
-    for (let i = 1; i < arrayOfCompleted.length; i++) {
-      clearedFromComleted = clearedFromComleted.filter(e => e.id !== arrayOfCompleted[i].id);
+    if (arrayOfCompleted.length !== 0) {
+      let clearedFromComleted = this.state.todoes.filter(e => e.id !== arrayOfCompleted[0].id);
+      for (let i = 1; i < arrayOfCompleted.length; i++) {
+        clearedFromComleted = clearedFromComleted.filter(e => e.id !== arrayOfCompleted[i].id);
+      }
+      this.setState({
+        todoes: clearedFromComleted
+      })
+    } else {
+      alert("Nothing to delete");
     }
-    this.setState({
-      todoes: clearedFromComleted
-    })
   }
   /*******************______**************************/
   
