@@ -1,30 +1,56 @@
 import React from 'react';
+import './AddComponent.css';
+import {ToastsContainer, ToastsStore} from 'react-toasts';
 
 export default class AddComponent extends React.Component {
 
-    state = { name: '' };
     isEnterPress(e) {
-        this.setState = { name: e.target.value };
+        const {value} = e.target;
         if (e.which === 13) {
             document.getElementById('textInp').value = '';
-            let textValue = this.setState.name;
-            this.props.addTodo(textValue);
+            let textValue = value;
+            if (textValue === '') {
+                alert('You didn\'t write a task. Null values aren\'t added to the task list!');
+                /* ToastsStore.error('You didn\'t write a task. Null values aren\'t added to the task list!', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                }); */
+            } else {
+                this.props.addTodo(textValue);
+            }
         }
     }
 
+   /*  <ToastsContainer
+    position="top-center"
+    autoClose={2000}
+    hideProgressBar
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnVisibilityChange
+    draggable
+    pauseOnHover
+/> */
     render() {
         return (
-            <div className="AddComponent">
+            <div className = { this.props.array.length === 0 ? "AddComponent shadow" : "AddComponent borderUnder" }>
+                <button 
+                    className = {this.props.array.length !== 0 ? "checkAll" : "invisibleButAdd" }
+                    onClick = {() => this.props.checkTask()}
+                >›</button>
                 <input
                     type = "text"
                     id = "textInp"
+                    className = "inp"
                     placeholder = "What needs to be done?"
                     onKeyPress = { (e) => this.isEnterPress(e) }
-                    //fullWidth = {true}
+                    fullWidth = {true}
                 />
-
-
-
             </div>
         );
     }

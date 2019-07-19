@@ -1,12 +1,12 @@
 import React from 'react';
 import  Todo  from './Components/Todo.js'
+//import './TaskList.css';
 import Filter from './Components/Filter.js'
 
 class TaskList extends React.Component {
 
     state = {
-        filterState: "all",
-        array: this.props.array
+        filterState: "all"
     };
     
     showTaskList(data, whatToRender) {
@@ -32,11 +32,9 @@ class TaskList extends React.Component {
                 toRender = data;
             }
         }
-        
-        //console.log('DATA >>> ', toRender);
-        return toRender.map( item => {
-            return (
+        return toRender.map( (item, idx) => (
                 <Todo
+                    key={idx}
                     taskName = {item.name}
                     taskStatus = {item.status}
                     id = {item.id}
@@ -45,20 +43,21 @@ class TaskList extends React.Component {
                     deleteTask = {eThis.deleteTask}
                 />
             )
-        });
+        );
     }
 
     render() {
-        console.log('@@render@@');
+        console.log('@@render@@', this.props);
         return (
             <div className = "TaskList">
                 
-                { this.props.array.length ? this.showTaskList(this.props.array, this.state.filterState) : null }
+                {this.showTaskList(this.props.array, this.state.filterState)}
                 { this.props.array.length !== 0 && 
                     <Filter 
                         transmit = { (todoes, whatToRender) => this.showTaskList(todoes, whatToRender) }
-                        removeAllCompleted = { this.state.removeAllCompleted }
+                        removeAllCompleted = { this.props.removeAllCompleted }
                         array = { this.props.array }
+                        taskListStatus = {this.state.filterState}
                     />
                 }
             </div>

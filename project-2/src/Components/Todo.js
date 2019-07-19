@@ -3,17 +3,18 @@ import './Todo_Style.css';
 
 export default class Todo extends React.Component {
 
-    constructor() {
-        console.log('constructor!!!')
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            isEditable: false
+            isEditable: false,
+            whereIsTheMouse: false
         };
+        this.inputRef = React.createRef();
     }
-    // state = {
-    //     isEditable: false
-    // };
 
+    componentDidUpdate() {
+        this.inputRef.current.focus();
+    }
 
     checkTask() {
 
@@ -22,58 +23,90 @@ export default class Todo extends React.Component {
     }
 
     changeTextName() {
-        console.log('!@!@!@')
         this.setState({ isEditable: true });
     }
 
     isEnterPress(e) {
+        console.log('EEE >>', e.target)
+        let textValue = e.target.value;
+        this.props.changeTaskName(textValue, this.props.id);
+
         if (e.which === 13) {
             this.setState({ isEditable: false });
-            let textValue = e.target.value;
             this.props.changeTaskName(textValue, this.props.id);
         }
     }
 
     onBlurHandler() {
-        console.log('!!!!!');
-        // this.setState({ isEditable: false })
+        this.setState({ isEditable: false })
     }
 
     deleteTask() {
-        this.props.deleteTask(this.props.id)
+        const {id} = this.props;
+        this.props.deleteTask(id)
+    }
+
+    classNameSpace() {
+        let className = "";
+        if (this.state.isEditable) {
+            className += "invisibleInput";
+        } else if (!this.props.taskStatus) {
+            className += "visibleInput";
+        } else {
+            className += "visibleInput isChecked text-muted";
+        }
+        return className;
+    }
+
+    mouseAt() {
+        this.setState({whereIsTheMouse: true});
+    }
+    mouseOut() {
+        this.setState({whereIsTheMouse: false});
     }
 
     render() {
-        console.log(`edit ${this.props.taskName}`, this.state);
         return (
-            <div className = "Todo">
-                <div>
-                    <input
-                        type = "checkbox"
-                        checked = {this.props.taskStatus}
-                        onClick = {() => this.checkTask()}
-                    />
-                </div>
-                <div>
-                    <p
-                        onDoubleClick = {(e) => this.changeTextName(e)}
-                    >
-                        {this.props.taskName}
-                    </p>
-                    <input
-                        className = {this.state.isEditable ? "visibleInput" : "invisibleInput"}
-                        type = "text"
-                        id = {this.props.id}
-                        defaultValue = {this.props.taskName}
-                        onKeyPress = {(e) => this.isEnterPress(e)}
-                        disabled = {!this.state.isEditable}
-                        onBlur = {() => this.onBlurHandler()}
-                    />
-                </div>
-                <div>
-                    <button
-                        onClick = {(id) => this.deleteTask(id)}
-                    >X</button>
+            <div className = "Todo" >
+                <div 
+                    className="todoBox"
+                    onMouseEnter = {() => this.mouseAt()}
+                    onMouseLeave = {() => this.mouseOut()}
+                >
+                    <div className="checkDiv">
+                        <input
+                            type = "checkbox"
+                            className = "checkbox"
+                            checked = {this.props.taskStatus}
+                            onChange = {() => this.checkTask()}
+                        />
+                    </div>
+                    <div className="taskName">
+                        <div className="pClass"
+                            onDoubleClick = {(e) => this.changeTextName(e)}
+                            className = {this.classNameSpace()}
+                        >
+                            {this.props.taskName}
+                        </div>
+                        <input
+                            rows="5"
+                            className = {this.state.isEditable ? "visibleInput inps" : "invisibleInput"}
+                            type = "text"
+                            id = {this.props.id}
+                            onKeyPress = {(e) => this.isEnterPress(e)}
+                            disabled = {!this.state.isEditable}
+                            onBlur = {() => this.onBlurHandler()}
+                            onChange = {(e) => this.isEnterPress(e)}
+                            ref = {this.inputRef}
+                            value = {this.props.taskName}
+                        />
+                    </div>
+                    <div className="delete">
+                        <button
+                            onClick = {() => this.deleteTask()}
+                            className = {!this.state.whereIsTheMouse ? "invisibleButX" : "closeXbut"}
+                        >×</button>
+                    </div>
                 </div>
             </div>
         )

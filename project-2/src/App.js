@@ -1,14 +1,19 @@
 import React from 'react';
-//import './App.css';
+import './App.css';
 import AddComponent from './Components/AddComponent.js'
 import { TaskList } from './TaskList.js'
 import uuid from 'uuid/v4';
 
+//import './Components/bootstrap/dist/css/bootstrap.css';
+//import './Components/bootstrap/dist/css/bootstrap-theme.css';
+
 class App extends React.Component {
-  
-  state = {
-    todoes: []
-  }
+   constructor() {
+     super()
+      this.state = {
+        todoes: []
+      }
+   }
   
   addTodo (nameValue) {
     let newTask = {
@@ -16,8 +21,28 @@ class App extends React.Component {
       status: false,
       id: uuid()
     }
-    this.setState ({ 
-      todoes: [ ...this.state.todoes, newTask ]
+    this.setState({ 
+      todoes: [...this.state.todoes, newTask]
+    });
+  }
+
+  checkTasks() {
+    let count = 0;
+    for (let i = 0; i<this.state.todoes.length; i++) {
+      if (this.state.todoes[i].status === false) {
+        count++;
+      }
+    }
+    this.setState(state => {
+      const todoes = state.todoes.map(e => {
+        if (count === 0) {
+          e.status = false;
+        } else {
+          e.status = true;
+        }
+        return e.status;
+      });
+      return {status: todoes};
     });
   }
  /************************************************/
@@ -35,7 +60,10 @@ class App extends React.Component {
   }
 
   deleteTask (id) {
-    this.setState({ ...this.state, todoes: this.state.todoes.filter(el => (el.id !== id)) })
+    const newArray = this.state.todoes.filter(el => (el.id !== id));
+    this.setState ({ 
+      todoes: newArray
+    });
   }
 
   changeText(name, id) {
@@ -70,20 +98,22 @@ class App extends React.Component {
   
   render() {
     return (
-      <div className="App" id="app">
-        <header className="App-header">todos</header>
-  
-        <AddComponent 
-          addTodo = { (e) => this.addTodo(e) }
-        />
-        <TaskList 
-          array = { this.state.todoes } 
-          checkTask = { (id, bool) => this.checkTask(id, bool) }
-          changeTaskName = { (name, id) => this.changeText(name, id) }
-          deleteTask = { (id) => this.deleteTask(id) }
-          removeAllCompleted = { (arrayOfCompleted) => this.removeAllCompleted(arrayOfCompleted) }
-        /> 
-
+      <div className="App container" id="app">
+        <header className="App-header text-center">todos</header>
+        <div className="taskBody shadow">
+          <AddComponent 
+            addTodo = { (e) => this.addTodo(e) }
+            checkTask = { () => this.checkTasks() }
+            array = { this.state.todoes } 
+          />
+          <TaskList 
+            array = { this.state.todoes } 
+            checkTask = { (id, bool) => this.checkTask(id, bool) }
+            changeTaskName = { (name, id) => this.changeText(name, id) }
+            deleteTask = { (id) => this.deleteTask(id) }
+            removeAllCompleted = { (arrayOfCompleted) => this.removeAllCompleted(arrayOfCompleted) }
+          /> 
+        </div>
       </div>
     );
   }
