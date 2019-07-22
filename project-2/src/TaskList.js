@@ -1,6 +1,5 @@
 import React from 'react';
 import  Todo  from './Components/Todo.js'
-//import './TaskList.css';
 import Filter from './Components/Filter.js'
 
 class TaskList extends React.Component {

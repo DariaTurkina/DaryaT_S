@@ -34,8 +34,6 @@ export default class Filter extends React.Component {
                 }
             }
         }*/
-
-        //console.log("Filter state", this.state)   justify-content-between
         return this.state.activeTasks.length;
     }
 
@@ -49,9 +47,8 @@ export default class Filter extends React.Component {
                 </div>
                 <div className = "FilterButtons">
                     <button
-                        onClick = {() => this.props.transmit(this.todoes, "all")}
+                        onClick = {() => this.props.transmit(todoes, "all")}
                         className = " fil"
-                        ref = {(ref) => {this.clickingAll = ref}}
                     >All</button>
                     <button
                         onClick = {() => this.props.transmit(todoes, "active")}

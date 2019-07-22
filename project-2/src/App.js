@@ -2,10 +2,9 @@ import React from 'react';
 import './App.css';
 import AddComponent from './Components/AddComponent.js'
 import { TaskList } from './TaskList.js'
-import uuid from 'uuid/v4';
+//import uuid from 'uuid/v4';
 
-//import './Components/bootstrap/dist/css/bootstrap.css';
-//import './Components/bootstrap/dist/css/bootstrap-theme.css';
+const axios = require('axios');//import axios from 'axios';
 
 class App extends React.Component {
    constructor() {
@@ -19,7 +18,7 @@ class App extends React.Component {
     let newTask = {
       name: nameValue, 
       status: false,
-      id: uuid()
+     // id: uuid()
     }
     this.setState({ 
       todoes: [...this.state.todoes, newTask]
