@@ -6,6 +6,4 @@ let TodoSchema = new Schema({
     status: {type: Boolean, required: true}
 });
 
-
-// Export the model
 module.exports = mongoose.model('Todo', TodoSchema);

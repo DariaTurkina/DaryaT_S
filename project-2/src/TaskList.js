@@ -36,7 +36,7 @@ class TaskList extends React.Component {
                     key={idx}
                     taskName = {item.name}
                     taskStatus = {item.status}
-                    id = {item.id}
+                    id = {item._id}
                     checkTask = {eThis.checkTask}
                     changeTaskName = {eThis.changeTaskName}
                     deleteTask = {eThis.deleteTask}
@@ -46,7 +46,7 @@ class TaskList extends React.Component {
     }
 
     render() {
-        console.log('@@render@@', this.props);
+        //console.log('@@render@@', this.props);
         return (
             <div className = "TaskList">
                 

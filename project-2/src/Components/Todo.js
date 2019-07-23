@@ -27,7 +27,7 @@ export default class Todo extends React.Component {
     }
 
     isEnterPress(e) {
-        console.log('EEE >>', e.target)
+        //console.log('EEE >>', e.target)
         let textValue = e.target.value;
         this.props.changeTaskName(textValue, this.props.id);
 

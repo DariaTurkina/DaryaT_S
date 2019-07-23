@@ -2,36 +2,65 @@ import React from 'react';
 import './App.css';
 import AddComponent from './Components/AddComponent.js'
 import { TaskList } from './TaskList.js'
-//import uuid from 'uuid/v4';
+import uuid from 'uuid/v4';
 
 const axios = require('axios');//import axios from 'axios';
+const path = "http://localhost:1234/todos";
 
 class App extends React.Component {
-   constructor() {
-     super()
-      this.state = {
-        todoes: []
-      }
-   }
-  
-  addTodo (nameValue) {
-    let newTask = {
-      name: nameValue, 
-      status: false,
-     // id: uuid()
+  constructor() {
+    super()
+    this.state = {
+      todoes: []
     }
-    this.setState({ 
-      todoes: [...this.state.todoes, newTask]
-    });
   }
 
-  checkTasks() {
+  componentDidMount() {
+    axios.get(`${path}`)
+      .then(res => {
+        const data = res.data;
+        this.setState({ todoes: data });
+      })
+      .catch((err) => {
+        console.log("SORRY: ", err);
+      })
+  }
+  async componentDidUpdate() {
+    await axios.get(`${path}`)
+      .then(res => {
+        const data = res.data;
+        this.setState({ todoes: data });
+      })
+      .catch((err) => {
+        console.log("SORRY: ", err);
+      })
+  }
+
+  addTodo(nameValue) {
+
+    let newTask = {
+      name: nameValue,
+      status: false
+    }
+    axios.post(`${path}/create`, newTask)
+      .then((newTask) => {
+        this.setState({
+          todoes: [...this.state.todoes, newTask]
+        });
+      })
+      .catch(function (err) {
+        console.log("WASN'T WRITTEN, BECAUSE: \n", err)
+      })
+  }
+
+  checkTasks() {//////////////////////////
     let count = 0;
-    for (let i = 0; i<this.state.todoes.length; i++) {
+    for (let i = 0; i < this.state.todoes.length; i++) {
       if (this.state.todoes[i].status === false) {
         count++;
       }
     }
+
     this.setState(state => {
       const todoes = state.todoes.map(e => {
         if (count === 0) {
@@ -41,82 +70,110 @@ class App extends React.Component {
         }
         return e.status;
       });
-      return {status: todoes};
+      return { status: todoes };
     });
   }
- /************************************************/
+  /************************************************/
 
-  checkTask(id, bool) {
+  checkTask(id, bool) {////////////////////
     this.setState(state => {
       const todoes = state.todoes.map(e => {
-        if (e.id === id) {
+        if (e._id === id) {
           e.status = bool;
           return e.status;
         }
       });
-      return {status: todoes};
+      return { status: todoes };
     });
   }
 
-  deleteTask (id) {
-    const newArray = this.state.todoes.filter(el => (el.id !== id));
-    this.setState ({ 
-      todoes: newArray
-    });
+  deleteTask(id) {
+    const newArray = this.state.todoes.filter(el => (el._id !== id));
+    axios.delete(`${path}/${id}/delete`)
+    .then(res => {
+      console.log('state in del >>', this.state);
+      this.setState({
+        todoes: newArray
+      });
+    })
+    .catch(err => {
+      console.log('err in del', err);
+    })    
   }
 
-  changeText(name, id) {
-    
-    this.setState(state => {
-      const updated = state.todoes.map(e => {
-          if (e.id === id) {
-            e.name = name;
-            return e.name;
-          }
+  changeText(name, id) {/////////////////////
+    axios.put(`${path}/${id}/update`, name)
+      .then(() => {
+        console.log('changed', name);
+        this.setState(state => {
+          const updated = state.todoes.map(e => {
+            if (e._id === id) {
+              e.name = name;
+              return e.name;
+            }
+          });
+          return { updated, };
         });
-        return {updated,};
-    });
-
+      })
+      .catch(err => {
+        console.log('error in changeText', err);
+      })
   }
   /************************************************/
 
-  removeAllCompleted(arrayOfCompleted) {
+  removeAllCompleted(arrayOfCompleted) {/////////////////////////////////
     if (arrayOfCompleted.length !== 0) {
-      let clearedFromComleted = this.state.todoes.filter(e => e.id !== arrayOfCompleted[0].id);
+
+      let clearedFromComleted = this.state.todoes.filter(e => e._id !== arrayOfCompleted[0]._id);
+      axios.delete(`${path}/${arrayOfCompleted[0]._id}/delete`)
+        .than(() => {
+          this.setState({
+            todoes: clearedFromComleted
+          })
+        })
+        .catch(err => {
+          console.log(`0 error:\n`,err);
+        })
       for (let i = 1; i < arrayOfCompleted.length; i++) {
-        clearedFromComleted = clearedFromComleted.filter(e => e.id !== arrayOfCompleted[i].id);
+        clearedFromComleted = clearedFromComleted.filter(e => e._id !== arrayOfCompleted[i]._id);
+        axios.delete(`${path}/${arrayOfCompleted[i]._id}/delete`)
+          .than(() => {
+            this.setState({
+              todoes: clearedFromComleted
+            })
+          })
+          .catch(err => {
+            console.log(`${i} error:\n`,err);
+          })
       }
-      this.setState({
-        todoes: clearedFromComleted
-      })
     } else {
       alert("Nothing to delete");
     }
   }
   /*******************______**************************/
-  
+
   render() {
     return (
       <div className="App container" id="app">
         <header className="App-header text-center">todos</header>
         <div className="taskBody shadow">
-          <AddComponent 
-            addTodo = { (e) => this.addTodo(e) }
-            checkTask = { () => this.checkTasks() }
-            array = { this.state.todoes } 
+          <AddComponent
+            addTodo={(e) => this.addTodo(e)}
+            checkTask={() => this.checkTasks()}
+            array={this.state.todoes}
           />
-          <TaskList 
-            array = { this.state.todoes } 
-            checkTask = { (id, bool) => this.checkTask(id, bool) }
-            changeTaskName = { (name, id) => this.changeText(name, id) }
-            deleteTask = { (id) => this.deleteTask(id) }
-            removeAllCompleted = { (arrayOfCompleted) => this.removeAllCompleted(arrayOfCompleted) }
-          /> 
+          <TaskList
+            array={this.state.todoes}
+            checkTask={(id, bool) => this.checkTask(id, bool)}
+            changeTaskName={(name, id) => this.changeText(name, id)}
+            deleteTask={(id) => this.deleteTask(id)}
+            removeAllCompleted={(arrayOfCompleted) => this.removeAllCompleted(arrayOfCompleted)}
+          />
         </div>
       </div>
     );
   }
-  
+
 }
 
 export default App;

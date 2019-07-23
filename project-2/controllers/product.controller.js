@@ -1,6 +1,6 @@
-const Todo = require('../models/ product.model');
+const Todo = require('../models/product.model');
 
-exports.product_create = function (req, res) {
+exports.product_create = function (req, res) {    
     let todo = new Todo(
         {
             name: req.body.name,
@@ -16,15 +16,14 @@ exports.product_create = function (req, res) {
     })
 };
 
-//Simple version, without validation or sanitation
 exports.todoes = function (req, res, next) {
-    if (req) {
-        return next(err);
-    } else {
-        res.send('Greetings from the Todoes controller!');
-    }
+    Todo.find({}, function (err, todo) {
+        if (err) return next(err);
+        res.header('Access-Control-Allow-Origin', '*');
+        res.send(todo);
+    })
 };
-exports.product_details = function (req, res, next) {
+exports.product_details = function (req, res, next) {    
     Todo.findById(req.params.id, function (err, todo) {
         if (err) return next(err);
         res.send(todo);

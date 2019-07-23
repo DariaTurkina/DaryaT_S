@@ -39,31 +39,32 @@ export default class Filter extends React.Component {
 
     render() {
         const todoes = this.props.array;
-        console.log("Filter state ", this.props)
+        //console.log("Filter state ", this.props)
         return (
-            <div className = "Filter justify-content-between align-items-center p-1">
-                <div className = "Counter">
+            <div className="Filter justify-content-between align-items-center p-1">
+                <div className="Counter">
                     <p className="pCenter">{this.Counter(todoes)} items left</p>
                 </div>
-                <div className = "FilterButtons">
+                <div className="FilterButtons">
                     <button
-                        onClick = {() => this.props.transmit(todoes, "all")}
-                        className = " fil"
+                        onClick={() => this.props.transmit(todoes, "all")}
+                        className="fil"
                     >All</button>
                     <button
-                        onClick = {() => this.props.transmit(todoes, "active")}
-                        className = " fil"
+                        onClick={() => this.props.transmit(todoes, "active")}
+                        className="fil"
                     >Active</button>
                     <button
-                        onClick = {() => this.props.transmit(todoes, "completed")}
-                        className = " fil"
+                        onClick={() => this.props.transmit(todoes, "completed")}
+                        className="fil"
                     >Completed</button>
                 </div>
-                <div className = "ClearingButton">
+                <div className="ClearingButton">
                     <button
-                        type = "submit"
-                        onClick = {() => this.props.removeAllCompleted(this.state.completedTasks)}
-                        className = {this.state.completedTasks.length !== 0 ? "btn-link  fil clearing" : "invisibleBut"}
+                        type="submit"
+                        onClick={() => this.props.removeAllCompleted(this.state.completedTasks)}
+                        className={this.state.completedTasks.length !== 0 ? "btn-link fil clearing" : "invisibleBut"}
+                        disabled={this.state.completedTasks.length !== 0 ? false : true}
                     >Clear completed</button>
                 </div>
             </div>

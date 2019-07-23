@@ -1,6 +1,5 @@
 import React from 'react';
 import './AddComponent.css';
-import {ToastsContainer, ToastsStore} from 'react-toasts';
 
 export default class AddComponent extends React.Component {
 
@@ -49,7 +48,6 @@ export default class AddComponent extends React.Component {
                     className = "inp"
                     placeholder = "What needs to be done?"
                     onKeyPress = { (e) => this.isEnterPress(e) }
-                    fullWidth = {true}
                 />
             </div>
         );
