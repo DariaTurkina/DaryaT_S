@@ -39,6 +39,7 @@ class TaskList extends React.Component {
                     id = {item._id}
                     checkTask = {eThis.checkTask}
                     changeTaskName = {eThis.changeTaskName}
+                    changeText = {eThis.changeText}
                     deleteTask = {eThis.deleteTask}
                 />
             )

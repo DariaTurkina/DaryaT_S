@@ -7,7 +7,8 @@ export default class Todo extends React.Component {
         super(props)
         this.state = {
             isEditable: false,
-            whereIsTheMouse: false
+            whereIsTheMouse: false, 
+            name: props.taskName
         };
         this.inputRef = React.createRef();
     }
@@ -26,11 +27,14 @@ export default class Todo extends React.Component {
         this.setState({ isEditable: true });
     }
 
-    isEnterPress(e) {
-        //console.log('EEE >>', e.target)
+    isTextChange(e) {
         let textValue = e.target.value;
-        this.props.changeTaskName(textValue, this.props.id);
+        this.setState({name: textValue});
+        this.props.changeText(textValue, this.props.id);
+    }
 
+    isEnterPress(e) {
+        let textValue = this.state.name;
         if (e.which === 13) {
             this.setState({ isEditable: false });
             this.props.changeTaskName(textValue, this.props.id);
@@ -42,7 +46,7 @@ export default class Todo extends React.Component {
     }
 
     deleteTask() {
-        const {id} = this.props;
+        const { id } = this.props;
         this.props.deleteTask(id)
     }
 
@@ -59,52 +63,52 @@ export default class Todo extends React.Component {
     }
 
     mouseAt() {
-        this.setState({whereIsTheMouse: true});
+        this.setState({ whereIsTheMouse: true });
     }
     mouseOut() {
-        this.setState({whereIsTheMouse: false});
+        this.setState({ whereIsTheMouse: false });
     }
 
     render() {
         return (
-            <div className = "Todo" >
-                <div 
+            <div className="Todo" >
+                <div
                     className="todoBox"
-                    onMouseEnter = {() => this.mouseAt()}
-                    onMouseLeave = {() => this.mouseOut()}
+                    onMouseEnter={() => this.mouseAt()}
+                    onMouseLeave={() => this.mouseOut()}
                 >
                     <div className="checkDiv">
                         <input
-                            type = "checkbox"
-                            className = "checkbox"
-                            checked = {this.props.taskStatus}
-                            onChange = {() => this.checkTask()}
+                            type="checkbox"
+                            className="checkbox"
+                            checked={this.props.taskStatus}
+                            onChange={() => this.checkTask()}
                         />
                     </div>
                     <div className="taskName">
                         <div className="pClass"
-                            onDoubleClick = {(e) => this.changeTextName(e)}
-                            className = {this.classNameSpace()}
+                            onDoubleClick={(e) => this.changeTextName(e)}
+                            className={this.classNameSpace()}
                         >
                             {this.props.taskName}
                         </div>
                         <input
                             rows="5"
-                            className = {this.state.isEditable ? "visibleInput inps" : "invisibleInput"}
-                            type = "text"
-                            id = {this.props.id}
-                            onKeyPress = {(e) => this.isEnterPress(e)}
-                            disabled = {!this.state.isEditable}
-                            onBlur = {() => this.onBlurHandler()}
-                            onChange = {(e) => this.isEnterPress(e)}
-                            ref = {this.inputRef}
-                            value = {this.props.taskName}
+                            className={this.state.isEditable ? "visibleInput inps" : "invisibleInput"}
+                            type="text"
+                            id={this.props.id}
+                            onKeyPress={(e) => this.isEnterPress(e)}
+                            disabled={!this.state.isEditable}
+                            onBlur={() => this.onBlurHandler()}
+                            onChange={(e) => this.isTextChange(e)}
+                            ref={this.inputRef}
+                            value={this.props.taskName}
                         />
                     </div>
                     <div className="delete">
                         <button
-                            onClick = {() => this.deleteTask()}
-                            className = {!this.state.whereIsTheMouse ? "invisibleButX" : "closeXbut"}
+                            onClick={() => this.deleteTask()}
+                            className={!this.state.whereIsTheMouse ? "invisibleButX" : "closeXbut"}
                         >×</button>
                     </div>
                 </div>
@@ -112,4 +116,3 @@ export default class Todo extends React.Component {
         )
     }
 }
-// export { Todo }
